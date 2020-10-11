@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etch-A-Sketch-Project</title>
+    <style>
+        body{
+            text-align: center;
+            margin: auto;
+        }
+        :root {
+            --grid-cols: 1;
+            --grid-rows: 1;
+        }
+
+        #main-container {
+            margin-top: 11px;
+            border: 1.1px dotted;
+            border-color: rgba(132, 142, 153, 0.4);
+            width: max-content;
+            height: max-content;
+            padding: 20px;
+            text-align: center;
+            margin: auto;
+        }
+
+        #container {
+            display: grid;
+            grid-gap: 2px;
+            /* justify-items: center; */
+            justify-content: center;
+            /* align-self: center;
+            align-content: center; */
+            /* align-items: center; */
+            /* vertical-align: middle; */
+            
+            grid-template-rows: repeat(var(--grid-rows), 1.1em);
+            grid-template-columns: repeat(var(--grid-cols), 1.1em);
+        }
+
+        .grid-item {
+            background: black;
+            border: 1.1px solid #ddd;
+            /* align-content: center; */
+            /* text-align: center; */
+            /* margin: auto; */
+        }
+
+        .hovers-grid-item {
+            /* background-color: floralwhite; */
+            /* background: chartreuse; */
+            background: rgb(226, 176, 77);
+        }
+
+        button {
+            background: greenyellow;
+            height: max-content;
+            width: max-content;
+            text-align: center;
+            margin-bottom: 11px;
+        }
+
+        .cleanCells {
+            all: unset;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn">Reset Grid</button>
+    <div id="main-container">
+        <div id="container"></div>
+    </div>
+
+    <script>
+        let container = document.getElementById("container");
+        let reset_btn = document.getElementById("btn");
+
+        function makeRowsForGrid(rows, cols) {
+            container.style.setProperty("--grid-rows", rows);
+            container.style.setProperty("--grid-cols", cols);
+            for (let c = 0; c < rows * cols; c++) {
+                let cell = document.createElement("div");
+                container.appendChild(cell).classList.add("grid-item");
+                cell.addEventListener("mouseover", highlightGridItems);
+                // cell.addEventListener("mousemove", highlightGridItems);
+            }
+        }
+
+        function highlightGridItems(ev) {
+            // console.log(ev.target.className);
+            // ev.target.classList.add = "hover-grid-item";
+            // ev.target.style.className = "hover-grid-item";
+            // ev.target.className = "hover-grid-item";
+            // ev.target.style.background = "white";
+            ev.target.classList.toggle("hovers-grid-item");
+            console.log(ev.target.className, ev.target.getAttribute("class"));
+        }
+
+        reset_btn.addEventListener("click", () => {
+            // container.remove();
+            removeItems();
+            container.remove();
+            beginSketch();
+        });
+
+        function removeItems() {
+            container.querySelectorAll(".grid-item").forEach((el) => el.parentNode.removeChild(el));
+            container.querySelectorAll(".hover-grid-item").forEach((el) => el.parentNode.removeChild(el));
+        }
+
+        function beginSketch() {
+            removeItems();
+
+            let rows = +prompt("enter nummber of rows: ", 1);
+            let cols = +prompt("enter number of columns: ", 1);
+
+            makeRowsForGrid(rows, cols);
+            document.querySelector("#main-container").appendChild(container);
+        }
+
+        beginSketch();
+    </script>
+</body>
+
+</html>
+
+<!--
+            let container = document.getElementById("container");
+        let reset_btn = document.getElementById("btn");
+
+        let grid_items = [];
+
+        function makeRowsForGrid(rows, cols) {
+            // container.style.setProperty("--grid-rows", rows);
+            // container.style.setProperty("--grid-cols", cols);
+            for (let c = 0; c < rows * cols; c++) {
+                container.style.setProperty("--grid-rows", rows);
+                container.style.setProperty("--grid-cols", cols);
+                // container.remove();
+                let cell = document.createElement("div");
+                // cell.innerText = c + 1;
+                cell.style.background = "black";
+                container.appendChild(cell).classList.add("grid-item");
+                // cell.addEventListener("mouseover", highlightGridItems);
+                // cell.addEventListener("mousemove", highlightGridItems);
+                grid_items.push(cell);
+            }
+            document.querySelector("#main-container").appendChild(container);
+            // document.querySelector("#main-container").replaceChild(container, container.firstChild);
+        }
+
+        // let rows = +prompt("enter nummber of rows: ", 1);
+        // let cols = +prompt("enter number of columns: ", 1);
+        // makeRowsForGrid(rows, cols);
+
+        // container.addEventListener("mouseover", highlightGridItems);
+
+        function highlightGridItems(ev) {
+            // console.log(ev.target.className);
+            // ev.target.classList.add = "hover-grid-item";
+            ev.target.className = "hover-grid-item";
+        }
+
+        // grid_items.forEach(item => item.addEventListener("mouseover", highlightGridItems));
+
+        reset_btn.addEventListener("click", () => {
+            // container.style.display = "none";
+            // document.querySelector("main-container").removeChild(container);
+            container.remove();
+            removeItems();
+            beginSketch();
+        });
+
+        function removeItems() {
+            // grid_items.forEach(item => item.remove());
+            // grid_items.forEach(item => item.pop());
+            // Array.from(grid_items).forEach(item => item.unshift());
+            grid_items.forEach(item => item.style.className = "cleanCells");
+            // container.removeChild(container.firstChild);
+        }
+
+        function beginSketch() {
+            // container.remove();
+            // container.re
+            // Array.from(grid_items).forEach(item => item.unshift());
+            let rows = +prompt("enter nummber of rows: ", 1);
+            let cols = +prompt("enter number of columns: ", 1);
+
+            // grid_items.forEach(item => item.style.className = "cleanCells");
+            // grid_items.forEach(item => item.style.display = "none");
+
+            // container.removeChild(container.firstChild);
+            makeRowsForGrid(rows, cols);
+            // container.style.display = "";
+
+            // document.querySelector("#main-container").appendChild(container);
+            // document.querySelector("#main-container").replaceChild(container, container.firstChild);
+        }
+
+        beginSketch();
+-->
