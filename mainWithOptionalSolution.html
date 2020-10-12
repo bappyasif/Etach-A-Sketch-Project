@@ -16,7 +16,7 @@
         }
 
         #main-container {
-            margin-top: 11px;
+            /* margin-top: 11px;
             border: 1.1px dotted;
             border-color: rgba(132, 142, 153, 0.4);
             width: max-content;
@@ -24,6 +24,12 @@
             padding: 20px;
             text-align: center;
             margin: auto;
+             */
+            display: grid;
+            gap: 2px;
+            grid-template-columns: repeat(64, 1.1em);
+            grid-template-rows: repeat(64, 1.1em);
+            justify-content: center;
         }
 
         #container {
@@ -41,18 +47,32 @@
         }
 
         .grid-item {
-            background: black;
+            background: whitesmoke;
+            /* background-color: black; */
             border: 1.1px solid #ddd;
             /* align-content: center; */
             /* text-align: center; */
             /* margin: auto; */
+            filter: brightness(80%);
+        }
+
+        .grid-item:hover {
+            /* filter: 20%; */
+            background: yellowgreen;
+            filter: brightness(20%);
         }
 
         .hovers-grid-item {
             /* background-color: floralwhite; */
             /* background: chartreuse; */
             background: rgb(226, 176, 77);
+            /* filter: opacity(80%); */
+            filter: brightness(80%);
         }
+
+        /* .hovers-grid-item:hover {
+            filter: brightness(80%);
+        } */
 
         button {
             background: greenyellow;
@@ -78,21 +98,45 @@
         let container = document.getElementById("container");
         let reset_btn = document.getElementById("btn");
 
+        for(let c = 0; c < 64 * 64; c++) {
+            let cell = document.createElement("div");
+                document.querySelector("#main-container").appendChild(cell).classList.add("grid-item");
+        }
+
         function makeRowsForGrid(rows, cols) {
             container.style.setProperty("--grid-rows", rows);
             container.style.setProperty("--grid-cols", cols);
             for (let c = 0; c < rows * cols; c++) {
                 let cell = document.createElement("div");
                 container.appendChild(cell).classList.add("grid-item");
-                cell.addEventListener("mouseover", highlightGridItems);
+                // console.log(cell.getAttribute("style"));
+                // cell.addEventListener("mouseover", highlightGridItems);
                 // cell.addEventListener("mousemove", highlightGridItems);
+                cell.addEventListener("mouseover", darkenGridItemsColor);
             }
+        }
+
+        function darkenGridItemsColor(ev) {
+            let style = ev.target.getAttribute("style");
+            console.log(style);
+            // let indexMatch = style.indexOf("background-color:");
+            // let indexMatch = style.indexOf("background:");
+            let indexMatch = style.indexOf("background:");
+            let opacity = style.substring(indexMatch + 29, indexMatch + 38);
+            if(isNaN(opacity)) {
+                opacity = .1;
+            } else {
+                opacity = +opacity + .1;
+            }
+            console.log(opacity);
+            ev.target.setAttribute("style", `border: 1.1.px solid; background-color: rgba(0,0,0,${opacity})`);
         }
 
         function highlightGridItems(ev) {
             // console.log(ev.target.className);
             // ev.target.classList.add = "hover-grid-item";
             // ev.target.style.className = "hover-grid-item";
+            // ev.target.className = "grid-item hover-grid-item";
             // ev.target.className = "hover-grid-item";
             // ev.target.style.background = "white";
             ev.target.classList.toggle("hovers-grid-item");
@@ -118,7 +162,8 @@
             let cols = +prompt("enter number of columns: ", 1);
 
             makeRowsForGrid(rows, cols);
-            document.querySelector("#main-container").appendChild(container);
+            // document.querySelector("#main-container").appendChild(container);
+            document.querySelector("#main-container").replaceWith(container);
         }
 
         beginSketch();
@@ -126,79 +171,3 @@
 </body>
 
 </html>
-
-<!--
-            let container = document.getElementById("container");
-        let reset_btn = document.getElementById("btn");
-
-        let grid_items = [];
-
-        function makeRowsForGrid(rows, cols) {
-            // container.style.setProperty("--grid-rows", rows);
-            // container.style.setProperty("--grid-cols", cols);
-            for (let c = 0; c < rows * cols; c++) {
-                container.style.setProperty("--grid-rows", rows);
-                container.style.setProperty("--grid-cols", cols);
-                // container.remove();
-                let cell = document.createElement("div");
-                // cell.innerText = c + 1;
-                cell.style.background = "black";
-                container.appendChild(cell).classList.add("grid-item");
-                // cell.addEventListener("mouseover", highlightGridItems);
-                // cell.addEventListener("mousemove", highlightGridItems);
-                grid_items.push(cell);
-            }
-            document.querySelector("#main-container").appendChild(container);
-            // document.querySelector("#main-container").replaceChild(container, container.firstChild);
-        }
-
-        // let rows = +prompt("enter nummber of rows: ", 1);
-        // let cols = +prompt("enter number of columns: ", 1);
-        // makeRowsForGrid(rows, cols);
-
-        // container.addEventListener("mouseover", highlightGridItems);
-
-        function highlightGridItems(ev) {
-            // console.log(ev.target.className);
-            // ev.target.classList.add = "hover-grid-item";
-            ev.target.className = "hover-grid-item";
-        }
-
-        // grid_items.forEach(item => item.addEventListener("mouseover", highlightGridItems));
-
-        reset_btn.addEventListener("click", () => {
-            // container.style.display = "none";
-            // document.querySelector("main-container").removeChild(container);
-            container.remove();
-            removeItems();
-            beginSketch();
-        });
-
-        function removeItems() {
-            // grid_items.forEach(item => item.remove());
-            // grid_items.forEach(item => item.pop());
-            // Array.from(grid_items).forEach(item => item.unshift());
-            grid_items.forEach(item => item.style.className = "cleanCells");
-            // container.removeChild(container.firstChild);
-        }
-
-        function beginSketch() {
-            // container.remove();
-            // container.re
-            // Array.from(grid_items).forEach(item => item.unshift());
-            let rows = +prompt("enter nummber of rows: ", 1);
-            let cols = +prompt("enter number of columns: ", 1);
-
-            // grid_items.forEach(item => item.style.className = "cleanCells");
-            // grid_items.forEach(item => item.style.display = "none");
-
-            // container.removeChild(container.firstChild);
-            makeRowsForGrid(rows, cols);
-            // container.style.display = "";
-
-            // document.querySelector("#main-container").appendChild(container);
-            // document.querySelector("#main-container").replaceChild(container, container.firstChild);
-        }
-
-        beginSketch();
--->
