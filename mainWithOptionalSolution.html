@@ -53,13 +53,13 @@
             /* align-content: center; */
             /* text-align: center; */
             /* margin: auto; */
-            filter: brightness(80%);
+            /* filter: brightness(80%); */
         }
 
         .grid-item:hover {
             /* filter: 20%; */
             background: yellowgreen;
-            filter: brightness(20%);
+            /* filter: brightness(20%); */
         }
 
         .hovers-grid-item {
@@ -67,7 +67,7 @@
             /* background: chartreuse; */
             background: rgb(226, 176, 77);
             /* filter: opacity(80%); */
-            filter: brightness(80%);
+            /* filter: brightness(80%); */
         }
 
         /* .hovers-grid-item:hover {
@@ -108,6 +108,8 @@
             container.style.setProperty("--grid-cols", cols);
             for (let c = 0; c < rows * cols; c++) {
                 let cell = document.createElement("div");
+                // cell.setAttribute("style", "border: 1px solid; background: 'whitesmoke';");
+                cell.setAttribute("style", "border: 1px solid;");
                 container.appendChild(cell).classList.add("grid-item");
                 // console.log(cell.getAttribute("style"));
                 // cell.addEventListener("mouseover", highlightGridItems);
@@ -118,18 +120,19 @@
 
         function darkenGridItemsColor(ev) {
             let style = ev.target.getAttribute("style");
-            console.log(style);
+            // console.log(style);
             // let indexMatch = style.indexOf("background-color:");
             // let indexMatch = style.indexOf("background:");
-            let indexMatch = style.indexOf("background:");
-            let opacity = style.substring(indexMatch + 29, indexMatch + 38);
+            // let indexMatch = style.indexOf("border:");
+            let indexMatch = style.indexOf("background-color:");
+            let opacity = style.substring(indexMatch + 52, indexMatch + 55);
             if(isNaN(opacity)) {
                 opacity = .1;
             } else {
                 opacity = +opacity + .1;
             }
-            console.log(opacity);
-            ev.target.setAttribute("style", `border: 1.1.px solid; background-color: rgba(0,0,0,${opacity})`);
+            // console.log(opacity);
+            ev.target.setAttribute("style", `border: 1px solid; background-color: rgba(0,0,0,${opacity})`);
         }
 
         function highlightGridItems(ev) {
